@@ -47,6 +47,30 @@ function Dashboard() {
                     cursor: 'pointer'
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                  onClick={() => navigate('/avales')}>
+                    <div className="card-body d-flex flex-column">
+                      <div className="mb-3">
+                        <i className="bi bi-person-badge-fill fs-1" style={{ color: '#f5576c' }}></i>
+                      </div>
+                      <h5 className="card-title" style={{ color: '#f5576c' }}>Gestión de Avales</h5>
+                      <p className="card-text text-muted flex-grow-1">Administra la información de los avales asociados a tus clientes.</p>
+                      <button className="btn mt-auto" style={{
+                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        border: 'none',
+                        color: 'white'
+                      }}>
+                        <i className="bi bi-arrow-right-circle me-1"></i>Acceder
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4 mb-4">
+                  <div className="card text-center shadow-sm border-0 h-100" style={{
+                    transition: 'transform 0.2s',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
                   onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                     <div className="card-body d-flex flex-column">
                       <div className="mb-3">
@@ -60,6 +84,8 @@ function Dashboard() {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="row">
                 <div className="col-md-4 mb-4">
                   <div className="card text-center shadow-sm border-0 h-100" style={{
                     transition: 'transform 0.2s',

@@ -44,4 +44,24 @@ export const clientsService = {
   },
 };
 
+// Servicio de avales
+export const avalesService = {
+  getAvales: async (page = 1, limit = 10) => {
+    const response = await api.get(`/avales?page=${page}&limit=${limit}`);
+    return response.data;
+  },
+  createAval: async (aval) => {
+    const response = await api.post('/avales', aval);
+    return response.data;
+  },
+  updateAval: async (id, aval) => {
+    const response = await api.put(`/avales/${id}`, aval);
+    return response.data;
+  },
+  deleteAval: async (id) => {
+    const response = await api.delete(`/avales/${id}`);
+    return response.data;
+  },
+};
+
 export default api;
