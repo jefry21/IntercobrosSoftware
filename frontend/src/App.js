@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Clients from './components/Clients';
 import Avales from './components/Avales';
+import Cobros from './components/Cobros';
 import Layout from './components/Layout';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={isAuthenticated ? <Layout><Dashboard /></Layout> : <Navigate to="/login" />} />
         <Route path="/clients" element={isAuthenticated ? <Layout><Clients /></Layout> : <Navigate to="/login" />} />
         <Route path="/avales" element={isAuthenticated ? <Layout><Avales /></Layout> : <Navigate to="/login" />} />
+        <Route path="/cobros" element={isAuthenticated ? <Layout><Cobros /></Layout> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

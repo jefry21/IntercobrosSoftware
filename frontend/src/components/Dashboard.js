@@ -75,15 +75,20 @@ function Dashboard() {
                     cursor: 'pointer'
                   }}
                   onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                  onClick={() => navigate('/cobros')}>
                     <div className="card-body d-flex flex-column">
                       <div className="mb-3">
                         <i className="bi bi-cash-coin text-success fs-1"></i>
                       </div>
                       <h5 className="card-title text-success">Sistema de Cobros</h5>
                       <p className="card-text text-muted flex-grow-1">Registra y administra todos tus cobros pendientes.</p>
-                      <button className="btn btn-success mt-auto" disabled style={{ opacity: 0.6 }}>
-                        <i className="bi bi-tools me-1"></i>Próximamente
+                      <button className="btn mt-auto" style={{
+                        background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                        border: 'none',
+                        color: 'white'
+                      }}>
+                        <i className="bi bi-arrow-right-circle me-1"></i>Acceder
                       </button>
                     </div>
                   </div>
