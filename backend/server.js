@@ -197,3 +197,79 @@ app.delete('/avales/:id', authenticate, (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Pagos - almacenamiento en memoria
+const pagos = [];
+let pagoIdCounter = 1;
+
+// Generar pagos ficticios para los primeros 100 clientes
+const metodosPago = ['Efectivo', 'Transferencia', 'Tarjeta', 'Cheque'];
+const notasEjemplo = [
+  'Pago mensual',
+  'Abono a cuenta',
+  'Pago quincenal',
+  'Pago regular',
+  'Cuota del mes',
+  '',
+  'Pago adelantado',
+  'Abono extra'
+];
+
+// Función para generar números pseudo-aleatorios basados en una semilla
+function seededRandom(seed) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+for (let clienteId = 1; clienteId <= 100; clienteId++) {
+  // Usar el mismo cálculo que en Cobros.js frontend para que coincidan
+  const saldoInicial = Math.floor(seededRandom(clienteId * 1.5) * 50000) + 10000;
+  const pagosRealizados = Math.floor(seededRandom(clienteId * 2.3) * 12);
+  
+  if (pagosRealizados > 0) {
+    const montoPorPago = (saldoInicial / 24); // Aproximado
+    
+    for (let i = 0; i < pagosRealizados; i++) {
+      // Generar fechas progresivas en el pasado (más reciente = menor i)
+      const diasAtras = (pagosRealizados - i) * 30 + Math.floor(seededRandom(clienteId * i + 100) * 15);
+      const fechaPago = new Date();
+      fechaPago.setDate(fechaPago.getDate() - diasAtras);
+      
+      // Variar un poco el monto
+      const variacion = 0.8 + (seededRandom(clienteId * i + 50) * 0.4); // 80% a 120%
+      const monto = montoPorPago * variacion;
+      
+      pagos.push({
+        id: pagoIdCounter++,
+        clienteId: clienteId,
+        monto: parseFloat(monto.toFixed(2)),
+        metodoPago: metodosPago[Math.floor(seededRandom(clienteId * i + 200) * metodosPago.length)],
+        referencia: seededRandom(clienteId * i + 300) > 0.5 ? `REF-${String(10000 + pagoIdCounter).padStart(6, '0')}` : '',
+        notas: notasEjemplo[Math.floor(seededRandom(clienteId * i + 400) * notasEjemplo.length)],
+        fecha: fechaPago.toISOString()
+      });
+    }
+  }
+}
+
+// Obtener historial de pagos de un cliente
+app.get('/pagos/:clienteId', authenticate, (req, res) => {
+  const clienteId = parseInt(req.params.clienteId);
+  const pagosByCliente = pagos.filter(p => p.clienteId === clienteId);
+  res.json({ pagos: pagosByCliente, total: pagosByCliente.length });
+});
+
+// Registrar un nuevo pago
+app.post('/pagos', authenticate, (req, res) => {
+  const { clienteId, monto, metodoPago, referencia, notas } = req.body;
+  const nuevoPago = {
+    id: pagoIdCounter++,
+    clienteId: parseInt(clienteId),
+    monto: parseFloat(monto),
+    metodoPago,
+    referencia: referencia || '',
+    notas: notas || '',
+    fecha: new Date().toISOString()
+  };
+  pagos.push(nuevoPago);
+  res.json(nuevoPago);
+});
