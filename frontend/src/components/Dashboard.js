@@ -15,6 +15,10 @@ function Dashboard() {
             }}>
               <h1 className="display-4 text-primary fw-bold">Bienvenido a Intercobros</h1>
               <p className="lead text-muted">Sistema integral de gestión de cobros</p>
+              <p className="text-muted mb-0" style={{ fontSize: '0.9rem' }}>
+                <i className="bi bi-award-fill me-2" style={{ color: '#667eea' }}></i>
+                Creado por <span className="fw-semibold" style={{ color: '#667eea' }}>EcoSphere</span>
+              </p>
               <hr className="my-4" style={{ borderColor: '#667eea', opacity: 0.3 }} />
               <p className="mb-4">Administra clientes, registra cobros y genera reportes de manera eficiente.</p>
               <div className="row mt-4">
