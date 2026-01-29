@@ -64,4 +64,16 @@ export const avalesService = {
   },
 };
 
+// Servicio de pagos
+export const pagosService = {
+  getPagos: async (clienteId) => {
+    const response = await api.get(`/pagos/${clienteId}`);
+    return response.data;
+  },
+  createPago: async (pago) => {
+    const response = await api.post('/pagos', pago);
+    return response.data;
+  },
+};
+
 export default api;

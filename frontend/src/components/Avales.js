@@ -23,11 +23,14 @@ function Avales() {
   const loadAvales = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await avalesService.getAvales(page);
+      console.log('Cargando avales, página:', page);
+      const data = await avalesService.getAvales(page, 10);
+      console.log('Datos recibidos:', data);
       setAvales(data.avales);
       setTotal(data.total);
     } catch (err) {
-      alert('Error cargando avales');
+      console.error('Error detallado:', err);
+      alert('Error cargando avales: ' + err.message);
     } finally {
       setLoading(false);
     }

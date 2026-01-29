@@ -23,11 +23,14 @@ function Clients() {
   const loadClients = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await clientsService.getClients(page);
+      console.log('Cargando clientes, página:', page);
+      const data = await clientsService.getClients(page, 10);
+      console.log('Datos recibidos:', data);
       setClients(data.clients);
       setTotal(data.total);
     } catch (err) {
-      alert('Error cargando clientes');
+      console.error('Error detallado:', err);
+      alert('Error cargando clientes: ' + err.message);
     } finally {
       setLoading(false);
     }
