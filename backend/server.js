@@ -120,5 +120,80 @@ app.delete('/clients/:id', authenticate, (req, res) => {
   res.json({ message: 'Client deleted' });
 });
 
+// Avales data
+const avales = [];
+
+// Generate 50 mock avales
+for (let i = 1; i <= 50; i++) {
+  const nombre = nombres[i % nombres.length];
+  const apellido = apellidos[Math.floor(i / 5) % apellidos.length];
+  const apellido2 = apellidos[(i + 3) % apellidos.length];
+  const ciudad = ciudades[i % ciudades.length];
+  const colonia = colonias[i % colonias.length];
+  
+  avales.push({
+    id: i,
+    name: `${nombre} ${apellido} ${apellido2}`,
+    email: `${nombre.toLowerCase()}.aval${i}@example.com`,
+    phone: `+504 9${String(Math.floor(500 + i)).substring(0, 3)}-${String((i * 13) % 9999).padStart(4, '0')}`,
+    dni: `${String(Math.floor(200000000 + i * 234567)).substring(0, 13)}`,
+    phoneHome: `+504 2${String(Math.floor(300 + i * 2)).substring(0, 3)}-${String((i * 5) % 9999).padStart(4, '0')}`,
+    phoneWork: `+504 2${String(Math.floor(600 + i * 3)).substring(0, 3)}-${String((i * 9) % 9999).padStart(4, '0')}`,
+    addressHome: `${calles[(i + 2) % calles.length]} #${(i * 3) % 100}-${(i * 4) % 100}, ${colonia}, ${ciudad}`,
+    addressWork: `${empresas[(i + 5) % empresas.length]}, ${calles[(i + 7) % calles.length]} #${(i * 5) % 500}, ${ciudades[(i + 4) % ciudades.length]}`
+  });
+}
+
+// Avales routes
+app.get('/avales', authenticate, (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const paginated = avales.slice(start, end);
+  res.json({ avales: paginated, total: avales.length, page, limit });
+});
+
+app.post('/avales', authenticate, (req, res) => {
+  const { name, email, phone, dni, phoneHome, phoneWork, addressHome, addressWork } = req.body;
+  const newAval = { 
+    id: avales.length + 1, 
+    name, 
+    email, 
+    phone, 
+    dni, 
+    phoneHome, 
+    phoneWork, 
+    addressHome, 
+    addressWork 
+  };
+  avales.push(newAval);
+  res.json(newAval);
+});
+
+app.put('/avales/:id', authenticate, (req, res) => {
+  const id = parseInt(req.params.id);
+  const aval = avales.find(a => a.id === id);
+  if (!aval) return res.status(404).json({ message: 'Aval not found' });
+  const { name, email, phone, dni, phoneHome, phoneWork, addressHome, addressWork } = req.body;
+  aval.name = name;
+  aval.email = email;
+  aval.phone = phone;
+  aval.dni = dni;
+  aval.phoneHome = phoneHome;
+  aval.phoneWork = phoneWork;
+  aval.addressHome = addressHome;
+  aval.addressWork = addressWork;
+  res.json(aval);
+});
+
+app.delete('/avales/:id', authenticate, (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = avales.findIndex(a => a.id === id);
+  if (index === -1) return res.status(404).json({ message: 'Aval not found' });
+  avales.splice(index, 1);
+  res.json({ message: 'Aval deleted' });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
